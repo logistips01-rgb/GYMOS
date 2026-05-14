@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Comunión de Nombre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rose:#e8c4c4;
+  --rose-deep:#c9908f;
+  --mauve:#b07a8a;
+  --mauve-dark:#7d4f5c;
+  --cream:#fdf8f5;
+  --warm:#f5ede8;
+  --petal:#f0dada;
+  --ink:#2c1f22;
+  --muted:#9a7880;
+  --white:#ffffff;
+  --shadow:rgba(44,31,34,.08);
+  --shadow-lg:rgba(44,31,34,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+
+/* ─── HERO PANTALLA COMPLETA ─── */
+.hero{
+  position:relative;
+  height:100svh;
+  min-height:600px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:var(--petal);
+}
+.hero-bg img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+  opacity:.85;
+  filter:saturate(0.85) brightness(0.95);
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(44,31,34,.1) 0%,
+    rgba(44,31,34,.05) 30%,
+    rgba(44,31,34,.45) 100%
+  );
+}
+.hero-content{
+  position:relative;z-index:2;
+  text-align:center;
+  padding:2rem;
+  color:var(--white);
+}
+.hero-flor{
+  font-size:2.2rem;
+  margin-bottom:1rem;
+  opacity:.9;
+  animation:flotar 3s ease-in-out infinite;
+}
+@keyframes flotar{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.hero-eyebrow{
+  font-family:'Lato',sans-serif;
+  font-size:.7rem;font-weight:700;
+  letter-spacing:.4em;text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  margin-bottom:1.25rem;
+}
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(4rem,12vw,9rem);
+  font-weight:400;
+  line-height:.9;
+  color:var(--white);
+  text-shadow:0 2px 30px rgba(44,31,34,.3);
+  margin-bottom:.5rem;
+}
+.hero-name em{
+  display:block;
+  font-style:italic;
+  font-weight:400;
+}
+.hero-linea{
+  width:60px;height:1px;
+  background:rgba(255,255,255,.5);
+  margin:1.5rem auto;
+}
+.hero-fecha{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-style:italic;
+  color:rgba(255,255,255,.9);
+  margin-bottom:.4rem;
+}
+.hero-iglesia{
+  font-size:.8rem;font-weight:300;
+  letter-spacing:.12em;
+  color:rgba(255,255,255,.7);
+  text-transform:uppercase;
+}
+.hero-countdown{
+  display:flex;gap:1rem;justify-content:center;
+  margin-top:2rem;flex-wrap:wrap;
+}
+.cd-box{
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:10px;
+  padding:.6rem .9rem;min-width:58px;
+}
+.cd-num{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;font-weight:500;
+  color:var(--white);line-height:1;
+}
+.cd-label{
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.65);margin-top:.2rem;
+}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(255,255,255,.6);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  animation:bajar 2s ease-in-out infinite;
+}
+.hero-scroll svg{width:18px;height:18px;stroke:rgba(255,255,255,.6);}
+@keyframes bajar{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
+
+/* ─── CONTADOR CONFIRMADOS (BARRA) ─── */
+.barra-counter{
+  background:var(--mauve);
+  color:var(--white);
+  text-align:center;
+  padding:.75rem 1rem;
+  font-size:.82rem;
+  letter-spacing:.05em;
+}
+.barra-counter strong{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-style:italic;
+}
+
+/* ─── NAV ─── */
+.sticky-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(253,248,245,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(176,122,138,.15);
+  padding:.8rem 2rem;
+  display:flex;justify-content:center;align-items:center;gap:1.5rem;
+  flex-wrap:wrap;
+}
+.sticky-nav a{
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color .2s;
+  display:flex;align-items:center;gap:.4rem;
+}
+.sticky-nav a:hover{color:var(--mauve);}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--rose-deep);opacity:.4;}
+
+/* ─── SECCIONES ─── */
+.seccion{
+  max-width:680px;
+  margin:0 auto;
+  padding:5rem 1.5rem;
+}
+.sec-flor{
+  font-size:1.5rem;
+  text-align:center;
+  margin-bottom:1rem;
+  opacity:.7;
+}
+.sec-eyebrow{
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--mauve);margin-bottom:.75rem;
+  text-align:center;
+}
+.sec-titulo{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,2.8rem);
+  font-weight:400;color:var(--ink);
+  margin-bottom:.5rem;line-height:1.1;
+  text-align:center;
+}
+.sec-titulo em{font-style:italic;color:var(--mauve);}
+.sec-linea{
+  width:40px;height:2px;
+  background:linear-gradient(to right,var(--rose),var(--mauve));
+  border-radius:2px;
+  margin:1.25rem auto 2rem;
+}
+.sec-desc{
+  font-size:.92rem;color:var(--muted);
+  margin-bottom:2rem;line-height:1.8;
+  text-align:center;font-weight:300;
+}
+
+/* ─── SEPARADOR FLORAL ─── */
+.sep-floral{
+  text-align:center;
+  padding:1.5rem 0;
+  color:var(--rose-deep);
+  font-size:1.1rem;
+  letter-spacing:1em;
+  opacity:.5;
+}
+
+/* ─── CAMPO ─── */
+.campo{margin-bottom:1.25rem;}
+.campo label{
+  display:block;font-size:.68rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.5rem;
+}
+.campo input,.campo textarea{
+  width:100%;
+  border:1px solid rgba(176,122,138,.25);
+  border-radius:8px;padding:.85rem 1.1rem;
+  font-family:'Lato',sans-serif;font-size:.95rem;
+  color:var(--ink);background:var(--white);
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.campo input:focus,.campo textarea:focus{
+  border-color:var(--mauve);
+  box-shadow:0 0 0 3px rgba(176,122,138,.12);
+}
+.campo textarea{resize:vertical;line-height:1.6;}
+
+/* ─── PLATOS ─── */
+.grupo-titulo{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-weight:400;font-style:italic;
+  color:var(--muted);margin:2rem 0 .75rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid rgba(176,122,138,.2);
+}
+.plato{
+  display:flex;align-items:center;gap:.85rem;
+  padding:.85rem 1.1rem;border-radius:10px;
+  border:1px solid rgba(176,122,138,.2);
+  margin-bottom:.5rem;cursor:pointer;
+  transition:all .18s;background:var(--white);
+  user-select:none;
+}
+.plato:hover{border-color:var(--rose-deep);background:#fff8f8;}
+.plato.sel{
+  border-color:var(--mauve);
+  background:linear-gradient(135deg,#fff8f8,#fdeef0);
+  box-shadow:0 2px 12px rgba(176,122,138,.15);
+}
+.plato input[type=radio]{display:none;}
+.dot{
+  width:18px;height:18px;min-width:18px;border-radius:50%;
+  border:1.5px solid rgba(176,122,138,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:transparent;transition:all .18s;
+}
+.plato.sel .dot{background:var(--mauve);border-color:var(--mauve);color:#fff;}
+.plato.sel .pnombre{font-weight:700;}
+.pnombre{font-size:.9rem;line-height:1.35;}
+
+/* ─── BOTÓN ─── */
+.btn-main{
+  margin-top:1.75rem;
+  padding:.95rem 2rem;
+  background:linear-gradient(135deg,var(--mauve-dark),var(--mauve));
+  color:var(--white);
+  border:none;border-radius:50px;
+  font-family:'Lato',sans-serif;
+  font-size:.82rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;cursor:pointer;
+  transition:opacity .2s,transform .15s;
+  width:100%;box-shadow:0 4px 20px rgba(176,122,138,.3);
+}
+.btn-main:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+.btn-main:disabled{opacity:.45;cursor:not-allowed;}
+.btn-sec{
+  padding:.7rem 1.4rem;background:transparent;
+  border:1.5px solid rgba(176,122,138,.35);border-radius:50px;
+  font-family:'Lato',sans-serif;font-size:.78rem;font-weight:700;
+  color:var(--muted);cursor:pointer;transition:all .18s;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.btn-sec:hover{border-color:var(--mauve);color:var(--mauve);}
+
+/* ─── ÉXITO ─── */
+.exito-bloque{display:none;text-align:center;padding:3rem 1rem;}
+.exito-bloque .ico{font-size:3rem;margin-bottom:1rem;}
+.exito-bloque h3{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;margin-bottom:.5rem;}
+.exito-bloque p{color:var(--muted);font-size:.9rem;}
+
+/* ─── INFO RESTAURANTE ─── */
+.info-rest{
+  display:flex;align-items:flex-start;gap:.75rem;
+  margin-bottom:1.75rem;
+  padding:1rem 1.25rem;
+  background:var(--warm);
+  border-radius:12px;
+  border-left:3px solid var(--rose-deep);
+}
+.info-rest-body p:first-child{
+  font-size:.72rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--mauve);margin-bottom:.3rem;
+}
+.info-rest-body p{font-size:.9rem;color:var(--ink);}
+.info-rest-body span{font-size:.82rem;color:var(--muted);}
+
+/* ─── ASISTENCIA ─── */
+.asistencia-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem;}
+.asistencia-grid .plato{justify-content:center;font-size:.95rem;padding:1.1rem;}
+.personas-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem;}
+
+/* ─── REGALOS ─── */
+.regalo-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1.1rem 1.25rem;border-radius:14px;
+  border:1px solid rgba(176,122,138,.2);
+  background:var(--white);margin-bottom:.75rem;
+  transition:all .2s;
+}
+.regalo-card:hover{box-shadow:0 4px 20px var(--shadow);}
+.regalo-card.reservado{
+  background:var(--warm);
+  border-color:rgba(176,122,138,.35);
+  opacity:.75;
+}
+.regalo-emoji{font-size:2.2rem;line-height:1;flex-shrink:0;margin-top:.1rem;}
+.regalo-info{flex:1;min-width:0;}
+.regalo-nombre{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;margin-bottom:.2rem;}
+.regalo-desc{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem;}
+.regalo-precio{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mauve);}
+.regalo-estado{margin-top:.6rem;}
+.btn-regalo{
+  padding:.5rem 1.2rem;border:none;border-radius:50px;
+  font-family:'Lato',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  background:linear-gradient(135deg,var(--mauve-dark),var(--mauve));
+  color:#fff;transition:opacity .2s;
+}
+.btn-regalo:hover:not(:disabled){opacity:.85;}
+.btn-regalo:disabled{background:var(--muted);cursor:not-allowed;}
+.regalo-reservado-por{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:.35rem;}
+
+/* ─── FOTOS ─── */
+#zona-drop{
+  border:2px dashed rgba(176,122,138,.3);
+  border-radius:16px;padding:2.5rem 1.5rem;
+  text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--white);
+  position:relative;
+}
+#zona-drop.over{border-color:var(--mauve);background:#fff8f8;}
+#zona-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.drop-ico{font-size:2.2rem;margin-bottom:.75rem;}
+.drop-t{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;font-style:italic;color:var(--ink);margin-bottom:.3rem;}
+.drop-s{font-size:.82rem;color:var(--muted);}
+#galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;margin-top:1.25rem;}
+.foto-item{aspect-ratio:1;border-radius:12px;overflow:hidden;}
+.foto-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.foto-item:hover img{transform:scale(1.05);}
+.foto-loading{display:flex;align-items:center;justify-content:center;background:var(--warm);}
+.spin{width:24px;height:24px;border:2px solid var(--petal);border-top-color:var(--mauve);border-radius:50%;animation:giro .7s linear infinite;}
+@keyframes giro{to{transform:rotate(360deg);}}
+
+/* ─── FIRMAS ─── */
+#canvas-firma{
+  width:100%;height:180px;border-radius:12px;
+  border:1.5px solid rgba(176,122,138,.25);
+  background:var(--white);cursor:crosshair;
+  touch-action:none;display:block;
+}
+.firma-ctrls{display:flex;gap:.6rem;align-items:center;margin-top:.75rem;flex-wrap:wrap;}
+.colores{display:flex;gap:.4rem;margin-left:auto;}
+.cdot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s;}
+.cdot:hover,.cdot.act{transform:scale(1.25);border-color:var(--ink);}
+#firmas-lista{display:flex;flex-direction:column;gap:.75rem;margin-top:1.75rem;}
+.firma-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1rem 1.1rem;border-radius:12px;
+  border:1px solid rgba(176,122,138,.15);background:var(--white);
+}
+.firma-card img{height:64px;border-radius:8px;border:1px solid rgba(176,122,138,.2);flex-shrink:0;}
+.fc-nombre{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);}
+.fc-ded{font-size:.85rem;color:var(--muted);font-style:italic;margin-top:.2rem;line-height:1.6;max-height:4.8em;overflow:hidden;transition:max-height .3s ease;}
+.fc-ded.expandida{max-height:1000px;}
+.fc-ver-mas{font-size:.75rem;color:var(--mauve);cursor:pointer;background:none;border:none;padding:0;margin-top:.3rem;font-family:'Lato',sans-serif;font-weight:700;display:block;}
+.fc-ver-mas:hover{text-decoration:underline;}
+.fc-fecha{font-size:.7rem;color:rgba(154,120,128,.5);margin-top:.3rem;}
+
+/* ─── ADMIN ─── */
+.admin-wrap{text-align:center;padding:2rem 1.5rem 4rem;}
+#btn-admin{background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;text-decoration:underline;letter-spacing:.05em;}
+#admin-panel{display:none;max-width:680px;margin:1rem auto;background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px var(--shadow-lg);}
+#admin-panel h3{background:linear-gradient(135deg,var(--mauve-dark),var(--mauve));color:#fff;font-family:'Playfair Display',serif;font-weight:400;font-style:italic;padding:1rem 1.5rem;font-size:1.2rem;}
+#admin-body{padding:1.5rem;}
+#admin-body h4{font-family:'Playfair Display',serif;font-weight:400;font-style:italic;color:var(--muted);margin-bottom:.6rem;font-size:1rem;}
+#admin-body table{width:100%;border-collapse:collapse;font-size:.85rem;}
+#admin-body th{text-align:left;padding:.45rem .75rem;background:var(--warm);color:var(--muted);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;}
+#admin-body td{padding:.45rem .75rem;border-bottom:1px solid var(--warm);}
+#admin-body tr:last-child td{border-bottom:none;}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:var(--white);padding:.75rem 1.5rem;border-radius:50px;font-size:.85rem;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:transform .3s,opacity .3s;opacity:0;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{background:var(--mauve);}
+.toast.err{background:#8b2020;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px){
+  .hero-name{font-size:clamp(3.5rem,16vw,6rem);}
+  .sticky-nav{gap:1rem;padding:.65rem .75rem;}
+  .seccion{padding:3.5rem 1.25rem;}
+  .firma-ctrls{flex-direction:column;align-items:flex-start;}
+  .colores{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO PANTALLA COMPLETA ══ -->
+<section class="hero">
+  <div class="hero-bg">
+    <img id="hero-img" src="foto-comunion.jpg" alt="Foto comunión"/>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-flor">🌸</div>
+    <p class="hero-eyebrow" id="hero-eyebrow"></p>
+    <h1 class="hero-name" id="hero-name"></h1>
+    <div class="hero-linea"></div>
+    <p class="hero-fecha" id="hero-fecha"></p>
+    <p class="hero-iglesia" id="hero-iglesia"></p>
+    <div class="hero-countdown" id="countdown">
+      <div class="cd-box"><span class="cd-num" id="cd-d">--</span><span class="cd-label">días</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-h">--</span><span class="cd-label">horas</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-m">--</span><span class="cd-label">min</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-s">--</span><span class="cd-label">seg</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    Scroll
+  </div>
+</section>
+
+<!-- ══ BARRA CONTADOR ══ -->
+<div class="barra-counter">
+  <strong id="cont-num">—</strong> personas ya han elegido su plato 🌸
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="sticky-nav">
+  <a href="#sec-confirmar">Confirmar</a>
+  <span class="nav-dot"></span>
+  <a href="#sec-menu">Menú</a>
+  <span class="nav-dot"></span>
+  <a href="#sec-regalos">Regalos</a>
+  <span class="nav-dot"></span>
+  <a href="#sec-fotos">Fotos</a>
+  <span class="nav-dot"></span>
+  <a href="#sec-firmas">Firmar</a>
+</nav>
+
+<!-- ══ MÓDULO: CONFIRMACIÓN DE ASISTENCIA ══ -->
+<section class="seccion" id="sec-confirmar">
+  <div class="sec-flor">🌷</div>
+  <p class="sec-eyebrow">La celebración</p>
+  <h2 class="sec-titulo">¿Podrás <em>acompañarnos?</em></h2>
+  <div class="sec-linea"></div>
+  <p class="sec-desc" id="desc-confirmar"></p>
+  <form id="form-confirm">
+    <div class="campo">
+      <label for="c-nombre">Tu nombre completo</label>
+      <input type="text" id="c-nombre" placeholder="María García López" autocomplete="name"/>
+    </div>
+    <div class="asistencia-grid">
+      <label class="plato" id="lbl-si"><input type="radio" name="asiste" value="si"><span class="dot">✓</span><span class="pnombre">✅ Sí, asistiré</span></label>
+      <label class="plato" id="lbl-no"><input type="radio" name="asiste" value="no"><span class="dot">✓</span><span class="pnombre">❌ No podré ir</span></label>
+    </div>
+    <div id="bloque-personas" style="display:none;">
+      <div class="personas-grid">
+        <div class="campo" style="margin:0"><label for="c-adultos">Adultos</label><input type="number" id="c-adultos" value="1" min="0" max="30"/></div>
+        <div class="campo" style="margin:0"><label for="c-ninos">Niños</label><input type="number" id="c-ninos" value="0" min="0" max="30"/></div>
+      </div>
+    </div>
+    <div class="campo" style="margin-top:.5rem">
+      <label for="c-nota">Nota <span style="font-weight:300;text-transform:none;letter-spacing:0">(opcional)</span></label>
+      <textarea id="c-nota" rows="2" placeholder="Alergia, silla de ruedas, vengo tarde…"></textarea>
+    </div>
+    <button type="submit" class="btn-main" id="btn-confirmar">Confirmar asistencia</button>
+  </form>
+  <div class="exito-bloque" id="exito-confirm">
+    <div class="ico">🙏</div>
+    <h3>¡Gracias!</h3>
+    <p id="exito-confirm-msg"></p>
+  </div>
+</section>
+
+<div class="sep-floral">✿ ✿ ✿</div>
+
+<!-- ══ MÓDULO: MENÚ / ELECCIÓN DE PLATO ══ -->
+<section class="seccion" id="sec-menu">
+  <div class="sec-flor">🍽️</div>
+  <p class="sec-eyebrow">El banquete</p>
+  <h2 class="sec-titulo">Elige tu <em>segundo plato</em></h2>
+  <div class="sec-linea"></div>
+  <p class="sec-desc">Cuéntanos qué te apetece para que todo salga perfecto el gran día.</p>
+  <div class="info-rest">
+    <div class="info-rest-body">
+      <p>📍 Lugar del banquete</p>
+      <p id="info-restaurante" style="font-weight:700;margin:.1rem 0 .2rem;"></p>
+      <span id="info-hora-banquete"></span>
+    </div>
+  </div>
+  <form id="form-menu">
+    <div class="campo">
+      <label for="nombre">Tu nombre completo</label>
+      <input type="text" id="nombre" placeholder="María García López" autocomplete="name"/>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PERSONALIZAR: reemplaza los platos
+         ══════════════════════════════════════ -->
+    <p class="grupo-titulo">Carnes</p>
+    <label class="plato"><input type="radio" name="segundo" value="[Plato de carne 1]"><span class="dot">✓</span><span class="pnombre">[Plato de carne 1]</span></label>
+    <label class="plato"><input type="radio" name="segundo" value="[Plato de carne 2]"><span class="dot">✓</span><span class="pnombre">[Plato de carne 2]</span></label>
+    <label class="plato"><input type="radio" name="segundo" value="[Plato de carne 3]"><span class="dot">✓</span><span class="pnombre">[Plato de carne 3]</span></label>
+    <p class="grupo-titulo">Pescados</p>
+    <label class="plato"><input type="radio" name="segundo" value="[Plato de pescado 1]"><span class="dot">✓</span><span class="pnombre">[Plato de pescado 1]</span></label>
+    <label class="plato"><input type="radio" name="segundo" value="[Plato de pescado 2]"><span class="dot">✓</span><span class="pnombre">[Plato de pescado 2]</span></label>
+    <!-- ══════════════════════════════════════ -->
+
+    <div class="campo" style="margin-top:1.5rem">
+      <label for="alergias">¿Tienes alguna alergia o intolerancia? <span style="font-weight:300;text-transform:none;letter-spacing:0">(opcional)</span></label>
+      <input type="text" id="alergias" placeholder="Ej: gluten, lactosa, marisco…"/>
+    </div>
+    <label style="display:flex;align-items:center;gap:.75rem;padding:.85rem 1.1rem;border-radius:10px;border:1px solid rgba(176,122,138,.2);background:#fff;cursor:pointer;margin-bottom:.5rem;user-select:none;">
+      <input type="checkbox" id="menu-infantil" style="width:18px;height:18px;accent-color:var(--mauve);cursor:pointer;flex-shrink:0;">
+      <span>
+        <strong style="font-size:.9rem;color:var(--ink)">Menú infantil</strong>
+        <span style="display:block;font-size:.78rem;color:var(--muted);margin-top:.1rem">Marca esta opción si es para un niño</span>
+      </span>
+    </label>
+    <button type="submit" class="btn-main" id="btn-enviar">Confirmar mi elección</button>
+  </form>
+  <div class="exito-bloque" id="exito">
+    <div class="ico">🎊</div>
+    <h3>¡Muchas gracias!</h3>
+    <p id="exito-menu-msg"></p>
+  </div>
+</section>
+
+<div class="sep-floral">✿ ✿ ✿</div>
+
+<!-- ══ MÓDULO: LISTA DE REGALOS ══ -->
+<section class="seccion" id="sec-regalos">
+  <div class="sec-flor">🎁</div>
+  <p class="sec-eyebrow">Los regalos</p>
+  <h2 class="sec-titulo">Lista de <em>deseos</em></h2>
+  <div class="sec-linea"></div>
+  <p class="sec-desc" id="desc-regalos"></p>
+  <div id="lista-regalos"></div>
+</section>
+
+<div class="sep-floral">✿ ✿ ✿</div>
+
+<!-- ══ MÓDULO: ÁLBUM DE FOTOS ══ -->
+<section class="seccion" id="sec-fotos">
+  <div class="sec-flor">📷</div>
+  <p class="sec-eyebrow">El álbum</p>
+  <h2 class="sec-titulo">¿Hiciste una foto <em>chula?</em></h2>
+  <div class="sec-linea"></div>
+  <p class="sec-desc" id="desc-fotos"></p>
+  <div id="zona-drop">
+    <input type="file" id="input-foto" accept="image/*" multiple/>
+    <div class="drop-ico">🌸</div>
+    <p class="drop-t">Súbela aquí</p>
+    <p class="drop-s">Arrastra tus fotos o pulsa para seleccionarlas</p>
+  </div>
+  <div id="galeria"></div>
+</section>
+
+<div class="sep-floral">✿ ✿ ✿</div>
+
+<!-- ══ MÓDULO: LIBRO DE FIRMAS ══ -->
+<section class="seccion" id="sec-firmas">
+  <div class="sec-flor">✍️</div>
+  <p class="sec-eyebrow">El libro de firmas</p>
+  <h2 class="sec-titulo">Deja tu <em>huella</em></h2>
+  <div class="sec-linea"></div>
+  <p class="sec-desc" id="desc-firmas"></p>
+  <div class="campo"><label for="firma-nombre">Tu nombre</label><input type="text" id="firma-nombre" placeholder="Tu nombre" autocomplete="name"/></div>
+  <div class="campo"><label for="firma-ded">Dedicatoria <span style="font-weight:300;text-transform:none;letter-spacing:0">(opcional)</span></label><textarea id="firma-ded" rows="3"></textarea></div>
+  <canvas id="canvas-firma"></canvas>
+  <div class="firma-ctrls">
+    <button class="btn-sec" id="btn-limpiar">Borrar</button>
+    <button class="btn-main" id="btn-firma" style="width:auto;padding:.7rem 1.75rem;margin-top:0">Guardar firma</button>
+    <div class="colores">
+      <div class="cdot act" data-c="#2c1f22" style="background:#2c1f22"></div>
+      <div class="cdot" data-c="#b07a8a" style="background:#b07a8a"></div>
+      <div class="cdot" data-c="#8b2020" style="background:#8b2020"></div>
+      <div class="cdot" data-c="#3a7a3a" style="background:#3a7a3a"></div>
+      <div class="cdot" data-c="#1a3a7a" style="background:#1a3a7a"></div>
+    </div>
+  </div>
+  <div id="firmas-lista"></div>
+</section>
+
+<!-- ══ ADMIN ══ -->
+<div class="admin-wrap">
+  <button id="btn-admin">Ver respuestas (administrador)</button>
+</div>
+<div id="admin-panel">
+  <h3>Panel de administrador</h3>
+  <div id="admin-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ╔══════════════════════════════════════════════════════╗
+   ║          CONFIGURACIÓN DEL CLIENTE                   ║
+   ╚══════════════════════════════════════════════════════╝ */
+
+const CLIENTE = {
+  nombre:          "Nombre",
+  id:              "nombre",
+  anyo:            "2026",
+  fechaISO:        "2026-06-01",
+  horaISO:         "12:00",
+  fechaLarga:      "1 de Junio de 2026",
+  iglesia:         "Iglesia de ejemplo",
+  horaCeremonia:   "12:00 h",
+  restaurante:     "Restaurante de ejemplo",
+  direccionRest:   "Calle de ejemplo",
+  horaBanquete:    "14:00",
+  fechaLimiteConf: "15 de mayo",
+};
+
+const FB = {
+  apiKey:            "TU_API_KEY",
+  authDomain:        "TU_PROYECTO.firebaseapp.com",
+  projectId:         "TU_PROYECTO",
+  storageBucket:     "TU_PROYECTO.firebasestorage.app",
+  messagingSenderId: "TU_SENDER_ID",
+  appId:             "TU_APP_ID"
+};
+
+const PASS = "contraseña2026";
+
+const REGALOS = [
+  {id:"r1", emoji:"👗", nombre:"[Regalo 1]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r2", emoji:"📚", nombre:"[Regalo 2]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r3", emoji:"🎨", nombre:"[Regalo 3]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r4", emoji:"💄", nombre:"[Regalo 4]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r5", emoji:"🎧", nombre:"[Regalo 5]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r6", emoji:"🌸", nombre:"[Regalo 6]", desc:"[Descripción]", precio:"~00 €"},
+  {id:"r7", emoji:"💳", nombre:"Hucha / aportación libre", desc:"Si prefieres dejar una aportación económica.", precio:"Libre"},
+];
+
+/* ╚══════════════════════════════════════════════════════╝
+   FIN DE LA CONFIGURACIÓN
+   ╚══════════════════════════════════════════════════════╝ */
+
+/* ── Inyección en el DOM ── */
+document.title=`Comunión de ${CLIENTE.nombre}`;
+document.getElementById("hero-img").alt=CLIENTE.nombre;
+document.getElementById("hero-eyebrow").textContent=`Primera Comunión · ${CLIENTE.anyo}`;
+document.getElementById("hero-name").innerHTML=`<em>${CLIENTE.nombre}</em>`;
+document.getElementById("hero-fecha").textContent=`📅 ${CLIENTE.fechaLarga}`;
+document.getElementById("hero-iglesia").textContent=`${CLIENTE.iglesia} · ${CLIENTE.horaCeremonia}`;
+document.getElementById("info-restaurante").textContent=`${CLIENTE.restaurante} · ${CLIENTE.direccionRest}`;
+document.getElementById("info-hora-banquete").textContent=`🕑 A las ${CLIENTE.horaBanquete} horas`;
+document.getElementById("exito-menu-msg").textContent=`Nos vemos en la comunión de ${CLIENTE.nombre} 🌸`;
+document.getElementById("desc-confirmar").innerHTML=`Confirma tu asistencia antes del <strong>${CLIENTE.fechaLimiteConf}</strong> para que podamos organizarlo todo.`;
+document.getElementById("desc-regalos").textContent=`Si quieres hacerle un regalo a ${CLIENTE.nombre}, aquí tienes algunas ideas. Márcalo para que nadie se repita 😊`;
+document.getElementById("desc-fotos").textContent=`Súbela aquí y quedará guardada para siempre en el álbum de ${CLIENTE.nombre}.`;
+document.getElementById("desc-firmas").textContent=`Firma con el dedo o el ratón y escribe unas palabras para ${CLIENTE.nombre}.`;
+document.querySelector("#firma-ded").placeholder=`Escribe algo bonito para ${CLIENTE.nombre}…`;
+
+const $=id=>document.getElementById(id);
+
+function toast(msg,t="ok"){
+  const el=$("toast");el.textContent=msg;
+  el.className=`toast show ${t}`;
+  setTimeout(()=>el.classList.remove("show"),3200);
+}
+
+let _app=null,_db=null;
+async function getApp(){if(_app)return _app;const{initializeApp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");_app=initializeApp(FB);return _app;}
+async function getDB(){if(_db)return _db;const{getFirestore}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");_db=getFirestore(await getApp());return _db;}
+
+/* ── MÓDULO: Cuenta atrás ── */
+(function(){
+  const objetivo=new Date(`${CLIENTE.fechaISO}T${CLIENTE.horaISO}:00`);
+  function actualizar(){
+    const diff=objetivo-new Date();
+    if(diff<=0){
+      $("countdown").innerHTML=`<span style='font-family:Playfair Display,serif;font-size:1.2rem;font-style:italic;color:rgba(255,255,255,.9)'>¡Hoy es el gran día! 🌸</span>`;
+      return;
+    }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    $("cd-d").textContent=String(d).padStart(2,"0");
+    $("cd-h").textContent=String(h).padStart(2,"0");
+    $("cd-m").textContent=String(m).padStart(2,"0");
+    $("cd-s").textContent=String(s).padStart(2,"0");
+  }
+  actualizar();setInterval(actualizar,1000);
+})();
+
+/* ── MÓDULO: Contador de confirmados ── */
+async function actualizarContador(){
+  try{
+    const{collection,getCountFromServer}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getCountFromServer(collection(await getDB(),"clientes",CLIENTE.id,"respuestas"));
+    const el=$("cont-num");el.textContent=snap.data().count;
+  }catch{$("cont-num").textContent="0";}
+}
+actualizarContador();
+
+/* ── MÓDULO: Confirmación de asistencia ── */
+document.querySelectorAll('input[name="asiste"]').forEach(r=>{
+  r.addEventListener("change",()=>{
+    document.querySelectorAll(".asistencia-grid .plato").forEach(l=>l.classList.remove("sel"));
+    r.closest(".plato").classList.add("sel");
+    $("bloque-personas").style.display=r.value==="si"?"block":"none";
+  });
+});
+
+$("form-confirm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const nombre=$("c-nombre").value.trim();
+  const radio=document.querySelector('input[name="asiste"]:checked');
+  if(!nombre){toast("Escribe tu nombre","err");return;}
+  if(!radio){toast("Indica si asistirás","err");return;}
+  const asiste=radio.value==="si";
+  const adultos=asiste?parseInt($("c-adultos").value)||1:0;
+  const ninos=asiste?parseInt($("c-ninos").value)||0:0;
+  const nota=$("c-nota").value.trim();
+  const btn=$("btn-confirmar");btn.disabled=true;btn.textContent="Guardando…";
+  try{
+    const{collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await addDoc(collection(await getDB(),"clientes",CLIENTE.id,"confirmaciones"),{nombre,asiste,adultos,ninos,nota:nota||"—",timestamp:serverTimestamp()});
+    $("form-confirm").style.display="none";
+    $("exito-confirm-msg").textContent=asiste?`¡Contamos contigo${adultos+ninos>1?` y ${adultos+ninos-1} acompañante${adultos+ninos-1>1?"s":""}`:""} 🌸`:"Lo sentimos mucho. ¡Te echaremos de menos!";
+    $("exito-confirm").style.display="block";
+  }catch(err){console.error(err);toast("Error al guardar","err");btn.disabled=false;btn.textContent="Confirmar asistencia";}
+});
+
+/* ── MÓDULO: Lista de regalos ── */
+let _regalosReservados={};
+
+async function cargarRegalos(){
+  try{
+    const{collection,getDocs}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(collection(await getDB(),"clientes",CLIENTE.id,"regalos"));
+    snap.forEach(doc=>{_regalosReservados[doc.id]=doc.data().reservado_por;});
+  }catch{}
+  renderRegalos();
+}
+
+function renderRegalos(){
+  const el=$("lista-regalos");
+  el.innerHTML=REGALOS.map(r=>{
+    const quien=_regalosReservados[r.id];const libre=!quien;
+    return `<div class="regalo-card${libre?"":" reservado"}">
+      <div class="regalo-emoji">${r.emoji}</div>
+      <div class="regalo-info">
+        <div class="regalo-nombre">${r.nombre}</div>
+        <div class="regalo-desc">${r.desc}</div>
+        <div class="regalo-precio">${r.precio}</div>
+        <div class="regalo-estado">
+          ${libre?`<button class="btn-regalo" onclick="reservarRegalo('${r.id}')">Me lo llevo 🎁</button>`
+                 :`<button class="btn-regalo" disabled>Ya elegido</button><div class="regalo-reservado-por">lo trae ${quien}</div>`}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function reservarRegalo(id){
+  const nombre=prompt("¿Cuál es tu nombre?")?.trim();
+  if(!nombre)return;
+  try{
+    const{doc,setDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await setDoc(doc(await getDB(),"clientes",CLIENTE.id,"regalos",id),{reservado_por:nombre,timestamp:serverTimestamp()});
+    _regalosReservados[id]=nombre;renderRegalos();
+    toast(`¡Genial, ${nombre}! 🎁 Regalo reservado`);
+  }catch(err){console.error(err);toast("Error al reservar","err");}
+}
+
+cargarRegalos();
+
+/* ── MÓDULO: Elección de plato ── */
+document.querySelectorAll(".plato").forEach(l=>{
+  l.addEventListener("click",()=>{document.querySelectorAll(".plato").forEach(x=>x.classList.remove("sel"));l.classList.add("sel");});
+});
+document.getElementById("menu-infantil").addEventListener("change",function(){
+  const platos=document.querySelectorAll(".grupo-titulo,.plato");
+  platos.forEach(p=>p.style.opacity=this.checked?"0.3":"1");
+  if(this.checked)document.querySelectorAll(".plato").forEach(p=>p.classList.remove("sel"));
+});
+$("form-menu").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const nombre=$("nombre").value.trim();
+  const infantil=document.getElementById("menu-infantil").checked;
+  const radio=document.querySelector('input[name="segundo"]:checked');
+  const alergias=$("alergias").value.trim();
+  if(!nombre){toast("Escribe tu nombre primero","err");return;}
+  if(!infantil&&!radio){toast("Elige un plato","err");return;}
+  const btn=$("btn-enviar");btn.disabled=true;btn.textContent="Guardando…";
+  try{
+    const{collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await addDoc(collection(await getDB(),"clientes",CLIENTE.id,"respuestas"),{nombre,segundo:infantil?"🧒 Menú infantil":radio.value,alergias:alergias||"—",infantil,timestamp:serverTimestamp()});
+    $("form-menu").style.display="none";$("exito").style.display="block";
+    actualizarContador();
+  }catch(err){console.error(err);toast("Error al guardar","err");btn.disabled=false;btn.textContent="Confirmar mi elección";}
+});
+
+/* ── MÓDULO: Álbum de fotos ── */
+const zona=$("zona-drop"),gal=$("galeria");
+zona.addEventListener("dragover",e=>{e.preventDefault();zona.classList.add("over");});
+zona.addEventListener("dragleave",()=>zona.classList.remove("over"));
+zona.addEventListener("drop",e=>{e.preventDefault();zona.classList.remove("over");subirFotos([...e.dataTransfer.files]);});
+$("input-foto").addEventListener("change",e=>subirFotos([...e.target.files]));
+
+async function subirFotos(files){
+  const imgs=files.filter(f=>f.type.startsWith("image/"));
+  if(!imgs.length){toast("Solo imágenes","err");return;}
+  imgs.forEach(subirUna);
+}
+
+function comprimirImg(file,max=800){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        const ratio=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement("canvas");
+        c.width=Math.round(img.width*ratio);c.height=Math.round(img.height*ratio);
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        res(c.toDataURL("image/jpeg",.78));
+      };
+      img.onerror=rej;img.src=ev.target.result;
+    };
+    r.onerror=rej;r.readAsDataURL(file);
+  });
+}
+
+async function subirUna(file){
+  const div=document.createElement("div");div.className="foto-item foto-loading";div.innerHTML='<div class="spin"></div>';gal.prepend(div);
+  try{
+    const base64=await comprimirImg(file);
+    const{collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await addDoc(collection(await getDB(),"clientes",CLIENTE.id,"fotos"),{base64,timestamp:serverTimestamp()});
+    const img=document.createElement("img");img.src=base64;img.alt="Foto";
+    div.className="foto-item";div.innerHTML="";div.appendChild(img);
+    toast("¡Foto guardada! 📸");
+  }catch(err){console.error(err);div.remove();toast("Error al subir","err");}
+}
+
+(async()=>{
+  try{
+    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(query(collection(await getDB(),"clientes",CLIENTE.id,"fotos"),orderBy("timestamp","desc")));
+    snap.forEach(doc=>{const div=document.createElement("div");div.className="foto-item";const img=document.createElement("img");img.src=doc.data().base64;img.alt="Foto";div.appendChild(img);gal.appendChild(div);});
+  }catch{}
+})();
+
+/* ── MÓDULO: Libro de firmas ── */
+const cv=$("canvas-firma"),ctx=cv.getContext("2d");
+let drawing=false,color="#2c1f22";
+
+function resizeCv(){const w=cv.offsetWidth;cv.width=w;cv.height=180;ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=color;}
+resizeCv();window.addEventListener("resize",resizeCv);
+
+function pos(e){const r=cv.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
+cv.addEventListener("mousedown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+cv.addEventListener("mousemove",e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();});
+cv.addEventListener("mouseup",()=>drawing=false);
+cv.addEventListener("mouseleave",()=>drawing=false);
+cv.addEventListener("touchstart",e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+cv.addEventListener("touchmove",e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
+cv.addEventListener("touchend",()=>drawing=false);
+$("btn-limpiar").addEventListener("click",()=>ctx.clearRect(0,0,cv.width,cv.height));
+
+document.querySelectorAll(".cdot").forEach(d=>{
+  d.addEventListener("click",()=>{document.querySelectorAll(".cdot").forEach(x=>x.classList.remove("act"));d.classList.add("act");color=d.dataset.c;ctx.strokeStyle=color;});
+});
+
+$("btn-firma").addEventListener("click",async()=>{
+  const nombre=$("firma-nombre").value.trim();const ded=$("firma-ded").value.trim();
+  if(!nombre){toast("Escribe tu nombre","err");return;}
+  const px=ctx.getImageData(0,0,cv.width,cv.height).data;
+  if(px.every((v,i)=>i%4===3?v===0:true)){toast("Dibuja tu firma primero","err");return;}
+  const btn=$("btn-firma");btn.disabled=true;btn.textContent="Guardando…";
+  try{
+    const base64=cv.toDataURL("image/png");
+    const{collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await addDoc(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),{nombre,dedicatoria:ded,base64,timestamp:serverTimestamp()});
+    addFirmaDOM({nombre,ded,base64,fecha:new Date().toLocaleDateString("es-ES")});
+    ctx.clearRect(0,0,cv.width,cv.height);$("firma-nombre").value="";$("firma-ded").value="";
+    toast("¡Firma guardada! ✍️");
+  }catch(err){console.error(err);toast("Error al guardar","err");}
+  btn.disabled=false;btn.textContent="Guardar firma";
+});
+
+function addFirmaDOM({nombre,ded,base64,fecha}){
+  const d=document.createElement("div");d.className="firma-card";
+  let dedHTML="";
+  if(ded){
+    const id="ded-"+Date.now()+Math.random().toString(36).slice(2);
+    dedHTML=`<div class="fc-ded" id="${id}">"${ded}"</div><button class="fc-ver-mas" onclick="toggleDed(this)" style="display:none">Ver más ▾</button>`;
+  }
+  d.innerHTML=`<img src="${base64}" alt="Firma"/><div style="min-width:0;flex:1"><div class="fc-nombre">${nombre}</div>${dedHTML}<div class="fc-fecha">${fecha}</div></div>`;
+  $("firmas-lista").prepend(d);
+  if(ded){const dedEl=d.querySelector(".fc-ded");const btn=d.querySelector(".fc-ver-mas");requestAnimationFrame(()=>{if(dedEl.scrollHeight>dedEl.clientHeight+4)btn.style.display="block";});}
+}
+
+(async()=>{
+  try{
+    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(query(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),orderBy("timestamp","desc")));
+    snap.forEach(doc=>{const d=doc.data();addFirmaDOM({nombre:d.nombre,ded:d.dedicatoria||"",base64:d.base64,fecha:d.timestamp?.toDate().toLocaleDateString("es-ES")||""});});
+  }catch{}
+})();
+
+/* ── Panel de administrador ── */
+$("btn-admin").addEventListener("click",async()=>{
+  const pass=prompt("Contraseña:");
+  if(pass!==PASS){toast("Contraseña incorrecta","err");return;}
+  $("admin-panel").style.display="block";
+  $("admin-body").innerHTML="<p style='padding:1rem;text-align:center'>Cargando…</p>";
+  try{
+    const{collection,getDocs}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db=await getDB();
+    const snapMenu=await getDocs(collection(db,"clientes",CLIENTE.id,"respuestas"));
+    const res={};let filasMenu="";let datosMenu=[];
+    snapMenu.forEach(doc=>{const d=doc.data();filasMenu+=`<tr><td>${d.nombre}</td><td>${d.segundo}</td><td>${d.alergias||"—"}</td></tr>`;res[d.segundo]=(res[d.segundo]||0)+1;datosMenu.push(d);});
+    const rr=Object.entries(res).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`<tr><td>${p}</td><td><strong>${n}</strong></td></tr>`).join("");
+    const snapConf=await getDocs(collection(db,"clientes",CLIENTE.id,"confirmaciones"));
+    let filasConf="";let datosConf=[];let totalAdultos=0,totalNinos=0,totalSi=0,totalNo=0;
+    snapConf.forEach(doc=>{const d=doc.data();filasConf+=`<tr><td>${d.nombre}</td><td>${d.asiste?"✅ Sí":"❌ No"}</td><td>${d.asiste?d.adultos:0}</td><td>${d.asiste?d.ninos:0}</td><td>${d.nota||"—"}</td></tr>`;if(d.asiste){totalSi++;totalAdultos+=d.adultos||0;totalNinos+=d.ninos||0;}else totalNo++;datosConf.push(d);});
+    const snapReg=await getDocs(collection(db,"clientes",CLIENTE.id,"regalos"));
+    let filasReg="";
+    REGALOS.forEach(r=>{const doc=snapReg.docs.find(d=>d.id===r.id);const quien=doc?doc.data().reservado_por:"Libre";filasReg+=`<tr><td>${r.emoji} ${r.nombre}</td><td>${r.precio}</td><td>${quien==="Libre"?"<em style='color:var(--muted)'>Libre</em>":quien}</td></tr>`;});
+    window._adminDatos=datosMenu;window._adminConf=datosConf;
+    $("admin-body").innerHTML=`
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+        <button onclick="exportarXLSX()" style="padding:.5rem 1rem;background:var(--mauve);color:#fff;border:none;border-radius:50px;font-size:.78rem;cursor:pointer;font-family:Lato,sans-serif;font-weight:700;letter-spacing:.08em;">⬇ Excel menú</button>
+        <button onclick="exportarConfirmaciones()" style="padding:.5rem 1rem;background:var(--mauve);color:#fff;border:none;border-radius:50px;font-size:.78rem;cursor:pointer;font-family:Lato,sans-serif;font-weight:700;letter-spacing:.08em;">⬇ Excel confirmaciones</button>
+        <button onclick="exportarFotos()" style="padding:.5rem 1rem;background:var(--mauve-dark);color:#fff;border:none;border-radius:50px;font-size:.78rem;cursor:pointer;font-family:Lato,sans-serif;font-weight:700;letter-spacing:.08em;">⬇ Fotos</button>
+        <button onclick="exportarFirmas()" style="padding:.5rem 1rem;background:var(--mauve-dark);color:#fff;border:none;border-radius:50px;font-size:.78rem;cursor:pointer;font-family:Lato,sans-serif;font-weight:700;letter-spacing:.08em;">⬇ Firmas</button>
+      </div>
+      <h4 style="margin-bottom:.75rem">Confirmaciones · resumen</h4>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="background:var(--warm);border-radius:8px;padding:.6rem 1rem;font-size:.85rem;"><strong>${totalSi}</strong> asisten · <strong>${totalNo}</strong> no pueden</div>
+        <div style="background:var(--warm);border-radius:8px;padding:.6rem 1rem;font-size:.85rem;"><strong>${totalAdultos}</strong> adultos · <strong>${totalNinos}</strong> niños · <strong>${totalAdultos+totalNinos}</strong> total</div>
+      </div>
+      <table><thead><tr><th>Nombre</th><th>Asiste</th><th>Adultos</th><th>Niños</th><th>Nota</th></tr></thead><tbody>${filasConf||"<tr><td colspan='5' style='color:var(--muted)'>Sin confirmaciones todavía.</td></tr>"}</tbody></table>
+      <h4 style="margin:1.75rem 0 .75rem">Menú · resumen por plato</h4>
+      <table><thead><tr><th>Plato</th><th>Votos</th></tr></thead><tbody>${rr||"<tr><td colspan='2' style='color:var(--muted)'>Sin respuestas todavía.</td></tr>"}</tbody></table>
+      <h4 style="margin:1.5rem 0 .75rem">Menú · todos los invitados</h4>
+      <table><thead><tr><th>Invitado</th><th>Segundo</th><th>Alergias</th></tr></thead><tbody>${filasMenu||"<tr><td colspan='3' style='color:var(--muted)'>Sin respuestas todavía.</td></tr>"}</tbody></table>
+      <h4 style="margin:1.75rem 0 .75rem">Lista de regalos</h4>
+      <table><thead><tr><th>Regalo</th><th>Precio</th><th>Reservado por</th></tr></thead><tbody>${filasReg}</tbody></table>`;
+  }catch(err){$("admin-body").innerHTML="<p style='padding:1rem;color:red'>Error. Comprueba las reglas de Firestore.</p>";}
+});
+
+function toggleDed(btn){const ded=btn.previousElementSibling;const expandida=ded.classList.toggle("expandida");btn.textContent=expandida?"Ver menos ▴":"Ver más ▾";}
+
+async function exportarXLSX(){
+  const datos=window._adminDatos||[];
+  if(!datos.length){toast("Sin datos","err");return;}
+  try{
+    const XLSX=await import("https://cdn.sheetjs.com/xlsx-0.20.1/package/xlsx.mjs");
+    const resumen={};datos.forEach(d=>{resumen[d.segundo]=(resumen[d.segundo]||0)+1;});
+    const ws=XLSX.utils.json_to_sheet(datos.map(d=>({"Nombre":d.nombre,"Segundo plato":d.segundo,"Menú infantil":d.infantil?"Sí":"No","Alergias":d.alergias||"—"})));
+    ws["!cols"]=[{wch:28},{wch:45},{wch:14},{wch:30}];
+    const wsR=XLSX.utils.json_to_sheet(Object.entries(resumen).sort((a,b)=>b[1]-a[1]).map(([p,n])=>({"Plato":p,"Votos":n})));
+    wsR["!cols"]=[{wch:55},{wch:10}];
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Invitados");XLSX.utils.book_append_sheet(wb,wsR,"Resumen");
+    XLSX.writeFile(wb,`menu-comunion-${CLIENTE.nombre.toLowerCase()}.xlsx`);toast("¡Excel descargado! 📊");
+  }catch(e){console.error(e);toast("Error al exportar","err");}
+}
+
+async function exportarConfirmaciones(){
+  const datos=window._adminConf||[];
+  if(!datos.length){toast("Sin confirmaciones","err");return;}
+  try{
+    const XLSX=await import("https://cdn.sheetjs.com/xlsx-0.20.1/package/xlsx.mjs");
+    const ws=XLSX.utils.json_to_sheet(datos.map(d=>({"Nombre":d.nombre,"Asiste":d.asiste?"Sí":"No","Adultos":d.adultos||0,"Niños":d.ninos||0,"Nota":d.nota||"—"})));
+    ws["!cols"]=[{wch:28},{wch:8},{wch:9},{wch:8},{wch:40}];
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Confirmaciones");
+    XLSX.writeFile(wb,`confirmaciones-comunion-${CLIENTE.nombre.toLowerCase()}.xlsx`);toast("¡Excel descargado! 📊");
+  }catch(e){console.error(e);toast("Error al exportar","err");}
+}
+
+async function exportarFotos(){
+  try{
+    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(query(collection(await getDB(),"clientes",CLIENTE.id,"fotos"),orderBy("timestamp","desc")));
+    if(snap.empty){toast("Sin fotos","err");return;}
+    let i=1;snap.forEach(doc=>{const a=document.createElement("a");a.href=doc.data().base64;a.download=`foto-${CLIENTE.nombre.toLowerCase()}-${i++}.jpg`;a.click();});
+    toast("Descargando fotos… 📸");
+  }catch{toast("Error al descargar fotos","err");}
+}
+
+async function exportarFirmas(){
+  try{
+    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(query(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),orderBy("timestamp","desc")));
+    if(snap.empty){toast("Sin firmas","err");return;}
+    snap.forEach(doc=>{
+      const d=doc.data();const firmaImg=new Image();
+      firmaImg.onload=()=>{
+        const pad=24;const headerH=d.dedicatoria?110:65;
+        const c=document.createElement("canvas");c.width=Math.max(firmaImg.width+pad*2,500);c.height=firmaImg.height+headerH+pad;
+        const cx=c.getContext("2d");cx.fillStyle="#fff8f8";cx.fillRect(0,0,c.width,c.height);
+        cx.fillStyle="#2c1f22";cx.font="bold 22px Georgia,serif";cx.fillText(d.nombre,pad,40);
+        cx.strokeStyle="#b07a8a";cx.lineWidth=1.5;cx.beginPath();cx.moveTo(pad,52);cx.lineTo(c.width-pad,52);cx.stroke();
+        if(d.dedicatoria){
+          cx.fillStyle="#9a7880";cx.font="italic 15px Georgia,serif";
+          const maxW=c.width-pad*2;const words=d.dedicatoria.split(" ");let line="";let y=74;
+          words.forEach(w=>{const test=line?line+" "+w:w;if(cx.measureText(test).width>maxW&&line){cx.fillText(`"${line}"`,pad,y);line=w;y+=22;}else line=test;});
+          cx.fillText(`"${line}"`,pad,y);
+        }
+        cx.drawImage(firmaImg,pad,headerH);
+        const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download=`firma-${d.nombre.replace(/\s+/g,"-")}.png`;a.click();
+      };
+      firmaImg.src=d.base64;
+    });
+    toast("Descargando firmas… ✍️");
+  }catch(e){console.error(e);toast("Error al descargar firmas","err");}
+}
+</script>
+</body>
+</html>
