@@ -424,11 +424,11 @@ body{
 
 <!-- ══ NAV ══ -->
 <nav class="sticky-nav">
-  <a href="#sec-confirmar">Confirmar</a>
-  <a href="#sec-menu">Menú</a>
-  <a href="#sec-regalos">Regalos</a>
-  <a href="#sec-fotos">Fotos</a>
-  <a href="#sec-firmas">Firmar</a>
+  <a href="#sec-confirmar" data-nav="confirmar">Confirmar</a>
+  <a href="#sec-menu" data-nav="menu">Menú</a>
+  <a href="#sec-regalos" data-nav="regalos">Regalos</a>
+  <a href="#sec-fotos" data-nav="fotos">Fotos</a>
+  <a href="#sec-firmas" data-nav="firmas">Firmar</a>
 </nav>
 
 <!-- ══ MÓDULO: MENÚ / ELECCIÓN DE PLATO ══ -->
@@ -624,9 +624,37 @@ const FB = {
   appId:             "1:23536544926:web:f782678cfba696a8c50428"
 };
 const PASS = "juanki2025";
+
+const MODULOS = {
+  confirmar: true,
+  menu:      true,
+  regalos:   true,
+  fotos:     true,
+  firmas:    true,
+};
 /* ══════════════════════════════════════ */
 
 const $=id=>document.getElementById(id);
+
+/* ── Control de módulos activos ── */
+(function(){
+  Object.entries(MODULOS).forEach(([mod,on])=>{
+    if(on) return;
+    const sec=document.getElementById('sec-'+mod);
+    if(sec){
+      const sep=sec.nextElementSibling;
+      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display='none';
+      sec.style.display='none';
+    }
+    const link=document.querySelector('a[href="#sec-'+mod+'"]');
+    if(link){
+      [link.previousElementSibling,link.nextElementSibling].forEach(el=>{
+        if(el&&el.tagName==='SPAN')el.style.display='none';
+      });
+      link.style.display='none';
+    }
+  });
+})();
 
 function toast(msg,t="ok"){
   const el=$("toast");el.textContent=msg;

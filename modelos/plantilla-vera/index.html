@@ -436,15 +436,15 @@ body{font-family:'Nunito Sans',sans-serif;background:var(--linen);color:var(--in
 
 <!-- ══ NAV ══ -->
 <nav class="sticky-nav">
-  <a href="#sec-confirmar">Confirmar</a>
+  <a href="#sec-confirmar" data-nav="confirmar">Confirmar</a>
   <span class="nav-leaf">🌿</span>
-  <a href="#sec-menu">Menú</a>
+  <a href="#sec-menu" data-nav="menu">Menú</a>
   <span class="nav-leaf">🌿</span>
-  <a href="#sec-regalos">Regalos</a>
+  <a href="#sec-regalos" data-nav="regalos">Regalos</a>
   <span class="nav-leaf">🌿</span>
-  <a href="#sec-fotos">Fotos</a>
+  <a href="#sec-fotos" data-nav="fotos">Fotos</a>
   <span class="nav-leaf">🌿</span>
-  <a href="#sec-firmas">Firmar</a>
+  <a href="#sec-firmas" data-nav="firmas">Firmar</a>
 </nav>
 
 <!-- ══ MÓDULO: CONFIRMACIÓN DE ASISTENCIA ══ -->
@@ -626,6 +626,14 @@ const FB = {
 
 const PASS = "contraseña2026";
 
+const MODULOS = {
+  confirmar: true,
+  menu:      true,
+  regalos:   true,
+  fotos:     true,
+  firmas:    true,
+};
+
 const REGALOS = [
   {id:"r1", emoji:"🎨", nombre:"[Regalo 1]", desc:"[Descripción]", precio:"~00 €"},
   {id:"r2", emoji:"📚", nombre:"[Regalo 2]", desc:"[Descripción]", precio:"~00 €"},
@@ -656,6 +664,26 @@ document.getElementById("desc-firmas").textContent=`Firma con el dedo o el rató
 document.querySelector("#firma-ded").placeholder=`Escribe algo bonito para ${CLIENTE.nombre}…`;
 
 const $=id=>document.getElementById(id);
+
+/* ── Control de módulos activos ── */
+(function(){
+  Object.entries(MODULOS).forEach(([mod,on])=>{
+    if(on) return;
+    const sec=document.getElementById('sec-'+mod);
+    if(sec){
+      const sep=sec.nextElementSibling;
+      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display='none';
+      sec.style.display='none';
+    }
+    const link=document.querySelector('a[href="#sec-'+mod+'"]');
+    if(link){
+      [link.previousElementSibling,link.nextElementSibling].forEach(el=>{
+        if(el&&el.tagName==='SPAN')el.style.display='none';
+      });
+      link.style.display='none';
+    }
+  });
+})();
 
 function toast(msg,t="ok"){const el=$("toast");el.textContent=msg;el.className=`toast show ${t}`;setTimeout(()=>el.classList.remove("show"),3200);}
 
