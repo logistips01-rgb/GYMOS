@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Comunión de Almirante</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ac:#c8a843;--ink:#0a1628;--bg:#f7fafd;--bg2:#e8eef5;--muted:#4a6480;--btn:#0f2342;--white:#fff;--sh:rgba(0,0,0,.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Raleway', sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;}
+
+/* ─── GATE ─── */
+#gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:2rem;}
+.gate-card{background:var(--white);border-radius:16px;padding:2.5rem 2rem;max-width:360px;width:100%;box-shadow:0 8px 32px var(--sh);text-align:center;}
+.gate-title{font-family:'Playfair Display', serif;font-size:1.5rem;font-style:italic;font-weight:400;margin-bottom:.5rem;}
+.gate-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
+#pass-input{width:100%;padding:.85rem 1rem;border:1.5px solid rgba(0,0,0,.12);border-radius:8px;font-size:1rem;font-family:'Raleway', sans-serif;color:var(--ink);background:var(--bg);outline:none;text-align:center;letter-spacing:.1em;margin-bottom:1rem;transition:border-color .2s;}
+#pass-input:focus{border-color:var(--ac);}
+#btn-unlock{width:100%;padding:.9rem;background:var(--btn);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
+#btn-unlock:hover{opacity:.85;}
+#gate-err{font-size:.8rem;color:#c0392b;margin-top:.5rem;min-height:1rem;}
+
+/* ─── PANEL ─── */
+#panel{display:none;max-width:580px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:2px solid var(--ac);}
+.panel-title{font-family:'Playfair Display', serif;font-size:1.5rem;font-style:italic;font-weight:400;}
+.ph-link{font-size:.75rem;font-weight:700;color:var(--muted);text-decoration:none;padding:.35rem .7rem;border-radius:6px;transition:color .2s,background .2s;}
+.ph-link:hover{color:var(--ac);background:rgba(0,0,0,.04);}
+
+/* ─── SECCIÓN ─── */
+.section{background:var(--white);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 2px 10px var(--sh);}
+.section h2{font-size:.65rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;}
+
+/* ─── TOGGLE ROW ─── */
+.mod-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid rgba(0,0,0,.05);}
+.mod-row:last-child{border-bottom:none;}
+.mod-info{display:flex;align-items:center;gap:.85rem;}
+.mod-icon{font-size:1.4rem;width:32px;text-align:center;flex-shrink:0;}
+.mod-name{font-size:.95rem;font-weight:600;}
+.mod-desc{font-size:.75rem;color:var(--muted);margin-top:.1rem;}
+/* Toggle switch */
+.switch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0;}
+.switch input{display:none;}
+.slider{position:absolute;inset:0;background:#d1d5db;border-radius:28px;cursor:pointer;transition:background .3s;}
+.slider::before{content:'';position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+input:checked+.slider{background:var(--ac);}
+input:checked+.slider::before{transform:translateX(24px);}
+
+/* ─── LINKS ─── */
+.links-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;}
+.link-btn{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.9rem .5rem;background:var(--bg2);border-radius:10px;text-decoration:none;color:var(--ink);font-size:.78rem;font-weight:600;transition:background .2s,transform .2s;}
+.link-btn:hover{background:var(--bg);transform:translateY(-2px);}
+.link-btn .ico{font-size:1.6rem;}
+
+/* ─── EXPORT ─── */
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.btn-export{padding:.85rem;background:var(--bg2);border:1.5px solid rgba(0,0,0,.1);border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .2s;font-family:'Raleway', sans-serif;color:var(--ink);}
+.btn-export:hover{background:var(--bg);}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:.65rem 1.25rem;border-radius:50px;font-size:.82rem;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .3s,opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;z-index:99;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- Gate -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-title">Panel de admin</div>
+    <div class="gate-sub">Comunión de Almirante</div>
+    <input id="pass-input" type="password" placeholder="Contraseña" autocomplete="current-password"/>
+    <button id="btn-unlock" onclick="unlock()">Entrar</button>
+    <div id="gate-err"></div>
+  </div>
+</div>
+
+<!-- Panel -->
+<div id="panel">
+  <div class="panel-header">
+    <h1 class="panel-title">Admin</h1>
+    <a href="index.html" class="ph-link">← Principal</a>
+  </div>
+
+  <!-- Módulos -->
+  <div class="section">
+    <h2>Módulos activos</h2>
+    <div class="mod-row">
+      <div class="mod-info"><span class="mod-icon">✅</span><div><div class="mod-name">Confirmar asistencia</div><div class="mod-desc">Formulario de confirmación</div></div></div>
+      <label class="switch"><input type="checkbox" id="mod-confirmar" onchange="toggleMod('confirmar',this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="mod-row">
+      <div class="mod-info"><span class="mod-icon">🍽️</span><div><div class="mod-name">Elección de menú</div><div class="mod-desc">Selección de plato</div></div></div>
+      <label class="switch"><input type="checkbox" id="mod-menu" onchange="toggleMod('menu',this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="mod-row">
+      <div class="mod-info"><span class="mod-icon">🎁</span><div><div class="mod-name">Lista de regalos</div><div class="mod-desc">Reserva de regalos</div></div></div>
+      <label class="switch"><input type="checkbox" id="mod-regalos" onchange="toggleMod('regalos',this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="mod-row">
+      <div class="mod-info"><span class="mod-icon">📷</span><div><div class="mod-name">Fotos del evento</div><div class="mod-desc">Sección subida de fotos</div></div></div>
+      <label class="switch"><input type="checkbox" id="mod-fotos" onchange="toggleMod('fotos',this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="mod-row">
+      <div class="mod-info"><span class="mod-icon">✍️</span><div><div class="mod-name">Libro de firmas</div><div class="mod-desc">Dedicatorias y firmas</div></div></div>
+      <label class="switch"><input type="checkbox" id="mod-firmas" onchange="toggleMod('firmas',this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <!-- Accesos -->
+  <div class="section">
+    <h2>Accesos rápidos</h2>
+    <div class="links-grid">
+      <a href="index.html" class="link-btn"><span class="ico">🏠</span>Principal</a>
+      <a href="firmas.html" class="link-btn"><span class="ico">✍️</span>Dedicatorias</a>
+      <a href="album.html" class="link-btn"><span class="ico">📸</span>Álbum</a>
+    </div>
+  </div>
+
+  <!-- Exportar -->
+  <div class="section">
+    <h2>Exportar datos</h2>
+    <div class="export-grid">
+      <button class="btn-export" onclick="exportar('confirmaciones')">📋 Confirmaciones</button>
+      <button class="btn-export" onclick="exportar('respuestas')">🍽️ Menú elegido</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+const CLIENTE={id:"almirante",nombre:"Almirante",pass:"contraseña2026"};
+const FB={apiKey:"TU_API_KEY",authDomain:"TU_PROYECTO.firebaseapp.com",projectId:"TU_PROYECTO",storageBucket:"TU_PROYECTO.firebasestorage.app",messagingSenderId:"TU_SENDER_ID",appId:"TU_APP_ID"};
+
+let _app=null,_db=null;
+async function getApp(){if(_app)return _app;const{initializeApp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");_app=initializeApp(FB);return _app;}
+async function getDB(){if(_db)return _db;const{getFirestore}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");_db=getFirestore(await getApp());return _db;}
+
+function toast(msg,tipo){
+  const t=document.getElementById('toast');t.textContent=msg;t.className='toast show';
+  if(tipo==='err')t.style.background='#c0392b';else t.style.background='';
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function unlock(){
+  const pass=document.getElementById('pass-input').value;
+  if(pass!==CLIENTE.pass){document.getElementById('gate-err').textContent='Contraseña incorrecta';return;}
+  document.getElementById('gate').style.display='none';
+  document.getElementById('panel').style.display='block';
+  cargarEstado();
+}
+document.getElementById('pass-input').addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
+
+async function cargarEstado(){
+  try{
+    const{doc,onSnapshot}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db=await getDB();
+    onSnapshot(doc(db,'clientes',CLIENTE.id,'config','modulos'),snap=>{
+      const data=snap.exists()?snap.data():{};
+      ['confirmar','menu','regalos','fotos','firmas'].forEach(mod=>{
+        const el=document.getElementById('mod-'+mod);
+        if(el)el.checked=typeof data[mod]==='boolean'?data[mod]:true;
+      });
+    });
+  }catch(e){toast('Error cargando estado','err');}
+}
+
+async function toggleMod(mod,on){
+  try{
+    const{doc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db=await getDB();
+    await setDoc(doc(db,'clientes',CLIENTE.id,'config','modulos'),{[mod]:on},{merge:true});
+    toast((on?'Activado':'Desactivado')+': '+mod);
+  }catch(e){toast('Error al guardar','err');}
+}
+
+async function exportar(col){
+  try{
+    toast('Cargando datos…');
+    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap=await getDocs(query(collection(await getDB(),'clientes',CLIENTE.id,col),orderBy('timestamp','desc')));
+    if(snap.empty){toast('Sin datos','err');return;}
+    const rows=[];
+    snap.forEach(d=>{
+      const r=d.data();delete r.base64;
+      if(r.timestamp?.toDate)r.timestamp=r.timestamp.toDate().toLocaleString('es-ES');
+      rows.push(r);
+    });
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),col);
+    XLSX.writeFile(wb,col+'-'+CLIENTE.nombre.toLowerCase()+'.xlsx');
+    toast('Excel descargado 📊');
+  }catch(e){toast('Error: '+e.message,'err');}
+}
+</script>
+</body>
+</html>

@@ -357,6 +357,10 @@ body{font-family:'Nunito Sans',sans-serif;background:var(--linen);color:var(--in
 
 /* ─── FIRMAS ─── */
 #canvas-firma{width:100%;height:180px;border-radius:10px;border:1.5px solid rgba(122,158,126,.25);background:var(--white);cursor:crosshair;touch-action:none;display:block;}
+
+/* ─── Enlace dedicatorias ─── */
+.btn-ver-firmas{display:inline-block;padding:.75rem 1.5rem;border-radius:8px;background:#2d5016;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:opacity .2s;}
+.btn-ver-firmas:hover{opacity:.82;}
 .firma-ctrls{display:flex;gap:.6rem;align-items:center;margin-top:.75rem;flex-wrap:wrap;}
 .colores{display:flex;gap:.4rem;margin-left:auto;}
 .cdot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s;}
@@ -447,6 +451,7 @@ body{font-family:'Nunito Sans',sans-serif;background:var(--linen);color:var(--in
   <a href="#sec-firmas" data-nav="firmas">Firmar</a>
   <span class="nav-leaf">🌿</span>
   <a href="album.html">📸 Álbum</a>
+  <a href="admin.html" style="opacity:.45;font-size:.55rem">⚙</a>
 </nav>
 
 <!-- ══ MÓDULO: CONFIRMACIÓN DE ASISTENCIA ══ -->
@@ -583,7 +588,10 @@ body{font-family:'Nunito Sans',sans-serif;background:var(--linen);color:var(--in
       <div class="cdot" data-c="#1a3a7a" style="background:#1a3a7a"></div>
     </div>
   </div>
-  <div id="firmas-lista"></div>
+  <div id="firmas-resumen" style="margin-top:1.75rem;text-align:center;">
+    <p id="contador-firmas" style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">Cargando…</p>
+    <a href="firmas.html" class="btn-ver-firmas">Ver todas las dedicatorias →</a>
+  </div>
 </section>
 
 <!-- ══ ADMIN ══ -->
@@ -668,23 +676,36 @@ document.querySelector("#firma-ded").placeholder=`Escribe algo bonito para ${CLI
 const $=id=>document.getElementById(id);
 
 /* ── Control de módulos activos ── */
-(function(){
+function aplicarModulos(){
   Object.entries(MODULOS).forEach(([mod,on])=>{
-    if(on) return;
     const sec=document.getElementById('sec-'+mod);
     if(sec){
       const sep=sec.nextElementSibling;
-      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display='none';
-      sec.style.display='none';
+      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display=on?'':'none';
+      sec.style.display=on?'':'none';
     }
     const link=document.querySelector('a[href="#sec-'+mod+'"]');
     if(link){
       [link.previousElementSibling,link.nextElementSibling].forEach(el=>{
-        if(el&&el.tagName==='SPAN')el.style.display='none';
+        if(el&&el.tagName==='SPAN')el.style.display=on?'':'none';
       });
-      link.style.display='none';
+      link.style.display=on?'':'none';
     }
   });
+}
+aplicarModulos();
+/* ── Módulos dinámicos desde Firestore (admin puede activar/desactivar en tiempo real) ── */
+(async()=>{
+  try{
+    const{doc,onSnapshot}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db=await getDB();
+    onSnapshot(doc(db,'clientes',CLIENTE.id,'config','modulos'),snap=>{
+      if(!snap.exists())return;
+      const data=snap.data();
+      Object.keys(MODULOS).forEach(mod=>{if(typeof data[mod]==='boolean')MODULOS[mod]=data[mod];});
+      aplicarModulos();
+    });
+  }catch{}
 })();
 
 function toast(msg,t="ok"){const el=$("toast");el.textContent=msg;el.className=`toast show ${t}`;setTimeout(()=>el.classList.remove("show"),3200);}
@@ -849,24 +870,19 @@ $("btn-firma").addEventListener("click",async()=>{
     const base64=cv.toDataURL("image/png");
     const{collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
     await addDoc(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),{nombre,dedicatoria:ded,base64,timestamp:serverTimestamp()});
-    addFirmaDOM({nombre,ded,base64,fecha:new Date().toLocaleDateString("es-ES")});
     ctx.clearRect(0,0,cv.width,cv.height);$("firma-nombre").value="";$("firma-ded").value="";toast("¡Firma guardada! ✍️");
   }catch(err){console.error(err);toast("Error al guardar","err");}
   btn.disabled=false;btn.textContent="Guardar firma";
 });
-function addFirmaDOM({nombre,ded,base64,fecha}){
-  const d=document.createElement("div");d.className="firma-card";
-  let dedHTML="";
-  if(ded){const id="ded-"+Date.now()+Math.random().toString(36).slice(2);dedHTML=`<div class="fc-ded" id="${id}">"${ded}"</div><button class="fc-ver-mas" onclick="toggleDed(this)" style="display:none">Ver más ▾</button>`;}
-  d.innerHTML=`<img src="${base64}" alt="Firma"/><div style="min-width:0;flex:1"><div class="fc-nombre">${nombre}</div>${dedHTML}<div class="fc-fecha">${fecha}</div></div>`;
-  $("firmas-lista").prepend(d);
-  if(ded){const dedEl=d.querySelector(".fc-ded");const btn=d.querySelector(".fc-ver-mas");requestAnimationFrame(()=>{if(dedEl.scrollHeight>dedEl.clientHeight+4)btn.style.display="block";});}
-}
 (async()=>{
   try{
-    const{collection,getDocs,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const snap=await getDocs(query(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),orderBy("timestamp","desc")));
-    snap.forEach(doc=>{const d=doc.data();addFirmaDOM({nombre:d.nombre,ded:d.dedicatoria||"",base64:d.base64,fecha:d.timestamp?.toDate().toLocaleDateString("es-ES")||""});});
+    const{collection,onSnapshot,query,orderBy}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const q=query(collection(await getDB(),"clientes",CLIENTE.id,"firmas"),orderBy("timestamp","desc"));
+    onSnapshot(q,snap=>{
+      const n=snap.size;
+      const el=document.getElementById("contador-firmas");
+      if(el)el.textContent=n+(n===1?" dedicatoria":" dedicatorias");
+    });
   }catch{}
 })();
 

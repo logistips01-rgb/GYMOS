@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dedicatorias — Comunión de Nombre</title>
+<meta name="theme-color" content="#c9b99a"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ac:   #c9b99a;
+  --ac2:  #ddd0b8;
+  --ink:  #2a2825;
+  --bg:   #faf8f5;
+  --bg2:  #f0ece4;
+  --muted:#8a8680;
+  --btn:  #a89070;
+  --white:#ffffff;
+  --sh:rgba(0,0,0,.07);
+  --shlg:rgba(0,0,0,.15);
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Raleway', sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;}
+
+/* ─── HEADER ─── */
+.ph{
+  background:var(--white);border-bottom:2.5px solid var(--ac);
+  padding:1rem 1.25rem;position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 12px var(--sh);
+}
+.ph-inner{
+  max-width:900px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+}
+.btn-back{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;padding:.35rem .7rem;border-radius:6px;
+  transition:color .2s,background .2s;flex-shrink:0;
+}
+.btn-back:hover{color:var(--ac);background:rgba(0,0,0,.04);}
+.ph-title{
+  font-family:'Cormorant Garamond', serif;font-size:clamp(1rem,2.5vw,1.4rem);
+  font-weight:400;font-style:italic;color:var(--ink);text-align:center;flex:1;
+}
+.ph-count{font-size:.78rem;font-weight:700;color:var(--ac);white-space:nowrap;min-width:60px;text-align:right;}
+
+/* ─── CONTENIDO ─── */
+#cont{max-width:900px;margin:0 auto;padding:1.75rem 1rem 4rem;}
+.intro{text-align:center;padding:1rem 1rem 1.75rem;}
+.intro p{font-size:.88rem;color:var(--muted);line-height:1.7;}
+#vacio{text-align:center;padding:5rem 1rem;color:var(--muted);}
+#vacio .ico{font-size:3rem;margin-bottom:.75rem;display:block;}
+
+/* ─── GRID ─── */
+#grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:480px){#grid{grid-template-columns:1fr;}}
+@media(min-width:860px){#grid{grid-template-columns:repeat(3,1fr);}}
+
+/* ─── TARJETA ─── */
+.fc{
+  background:var(--white);border-radius:var(--r);
+  border:1px solid rgba(0,0,0,.06);border-top:3px solid var(--ac);
+  box-shadow:0 2px 10px var(--sh);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:box-shadow .2s,transform .2s;
+}
+.fc:hover{box-shadow:0 6px 24px var(--shlg);transform:translateY(-2px);}
+.fc-body{padding:1.1rem 1.1rem .75rem;flex:1;}
+.fc-nombre{font-family:'Cormorant Garamond', serif;font-size:1.05rem;font-weight:500;font-style:italic;color:var(--ac);margin-bottom:.6rem;}
+.fc-ded{font-size:.87rem;color:var(--ink);line-height:1.65;word-break:break-word;}
+.fc-hora{font-size:.68rem;color:var(--muted);margin-top:.65rem;}
+.fc-img-wrap{padding:.75rem 1rem 1rem;background:var(--bg2);border-top:1px solid rgba(0,0,0,.05);}
+.fc-img{width:100%;border-radius:8px;display:block;border:1px solid rgba(0,0,0,.08);background:var(--white);}
+</style>
+</head>
+<body>
+<header class="ph">
+  <div class="ph-inner">
+    <a href="index.html" class="btn-back">← Volver</a>
+    <h1 class="ph-title">Libro de dedicatorias</h1>
+    <span class="ph-count" id="ph-count">—</span>
+  </div>
+</header>
+<div id="cont">
+  <div class="intro"><p>Todas las personas que han dejado su huella para <strong id="nombre-title">Nombre</strong></p></div>
+  <div id="vacio" style="display:none"><span class="ico">✍️</span><p>Aún no hay dedicatorias.</p></div>
+  <div id="grid"></div>
+</div>
+<script>
+const CLIENTE={id:"nombre",nombre:"Nombre"};
+const FB={apiKey:"TU_API_KEY",authDomain:"TU_PROYECTO.firebaseapp.com",projectId:"TU_PROYECTO",storageBucket:"TU_PROYECTO.firebasestorage.app",messagingSenderId:"TU_SENDER_ID",appId:"TU_APP_ID"};
+document.getElementById('nombre-title').textContent=CLIENTE.nombre;
+document.title='Dedicatorias — Comunión de '+CLIENTE.nombre;
+let _app=null,_db=null;
+async function getApp(){if(_app)return _app;const{initializeApp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");_app=initializeApp(FB);return _app;}
+async function getDB(){if(_db)return _db;const{getFirestore}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");_db=getFirestore(await getApp());return _db;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const grid=document.getElementById('grid'),vacio=document.getElementById('vacio'),countEl=document.getElementById('ph-count');
+function renderCard(data){
+  const div=document.createElement('div');div.className='fc';
+  const hora=data.timestamp?.toDate?data.timestamp.toDate().toLocaleString('es',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
+  div.innerHTML=`<div class="fc-body"><div class="fc-nombre">${esc(data.nombre||'Invitado')}</div>${data.dedicatoria?`<div class="fc-ded">${esc(data.dedicatoria)}</div>`:''
+  }${hora?`<div class="fc-hora">${hora}</div>`:''}</div>${data.base64?`<div class="fc-img-wrap"><img class="fc-img" src="${data.base64}" alt="Firma"/></div>`:''}`;
+  return div;
+}
+(async()=>{
+  const{collection,onSnapshot,orderBy,query}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+  const db=await getDB();
+  const q=query(collection(db,'clientes',CLIENTE.id,'firmas'),orderBy('timestamp','desc'));
+  onSnapshot(q,snap=>{
+    grid.innerHTML='';
+    const n=snap.size;countEl.textContent=n+(n===1?' firma':' firmas');
+    if(snap.empty){vacio.style.display='block';return;}
+    vacio.style.display='none';
+    snap.forEach(d=>grid.appendChild(renderCard(d.data())));
+  });
+})();
+</script>
+</body>
+</html>

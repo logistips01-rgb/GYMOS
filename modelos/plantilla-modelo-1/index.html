@@ -100,6 +100,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);ov
 .btn-regalo:disabled{background:var(--muted);cursor:not-allowed;}
 .regalo-reservado-por{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:.35rem;}
 #canvas-firma{width:100%;height:180px;border-radius:8px;border:1px solid rgba(184,149,90,.25);background:var(--white);cursor:crosshair;touch-action:none;display:block;}
+
+/* ─── Enlace dedicatorias ─── */
+.btn-ver-firmas{display:inline-block;padding:.75rem 1.5rem;border-radius:8px;background:#1a1a1a;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:opacity .2s;}
+.btn-ver-firmas:hover{opacity:.82;}
 .firma-ctrls{display:flex;gap:.6rem;align-items:center;margin-top:.75rem;flex-wrap:wrap;}
 .colores{display:flex;gap:.4rem;margin-left:auto;}
 .cdot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s;}
@@ -184,6 +188,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);ov
   <a href="#sec-fotos" data-nav="fotos">Fotos</a>
   <a href="#sec-firmas" data-nav="firmas">Firmar</a>
   <a href="album.html">📸 Álbum</a>
+  <a href="admin.html" style="opacity:.45;font-size:.55rem">⚙</a>
 </nav>
 
 <!-- ══ MÓDULO: MENÚ / ELECCIÓN DE PLATO ══ -->
@@ -342,7 +347,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);ov
       <div class="cdot" data-c="#1a3a7a" style="background:#1a3a7a"></div>
     </div>
   </div>
-  <div id="firmas-lista"></div>
+  <div id="firmas-resumen" style="margin-top:1.75rem;text-align:center;">
+    <p id="contador-firmas" style="font-size:.9rem;color:var(--muted);margin-bottom:1rem;">Cargando…</p>
+    <a href="firmas.html" class="btn-ver-firmas">Ver todas las dedicatorias →</a>
+  </div>
 </section>
 
 <!-- ══ ADMIN ══ -->
@@ -439,23 +447,36 @@ document.querySelector("#firma-ded").placeholder =
 const $=id=>document.getElementById(id);
 
 /* ── Control de módulos activos ── */
-(function(){
+function aplicarModulos(){
   Object.entries(MODULOS).forEach(([mod,on])=>{
-    if(on) return;
     const sec=document.getElementById('sec-'+mod);
     if(sec){
       const sep=sec.nextElementSibling;
-      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display='none';
-      sec.style.display='none';
+      if(sep&&sep.className&&sep.className.includes('sep-'))sep.style.display=on?'':'none';
+      sec.style.display=on?'':'none';
     }
     const link=document.querySelector('a[href="#sec-'+mod+'"]');
     if(link){
       [link.previousElementSibling,link.nextElementSibling].forEach(el=>{
-        if(el&&el.tagName==='SPAN')el.style.display='none';
+        if(el&&el.tagName==='SPAN')el.style.display=on?'':'none';
       });
-      link.style.display='none';
+      link.style.display=on?'':'none';
     }
   });
+}
+aplicarModulos();
+/* ── Módulos dinámicos desde Firestore (admin puede activar/desactivar en tiempo real) ── */
+(async()=>{
+  try{
+    const{doc,onSnapshot}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db=await getDB();
+    onSnapshot(doc(db,'clientes',CLIENTE.id,'config','modulos'),snap=>{
+      if(!snap.exists())return;
+      const data=snap.data();
+      Object.keys(MODULOS).forEach(mod=>{if(typeof data[mod]==='boolean')MODULOS[mod]=data[mod];});
+      aplicarModulos();
+    });
+  }catch{}
 })();
 
 function toast(msg,t="ok"){
